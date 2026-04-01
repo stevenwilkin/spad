@@ -42,6 +42,10 @@ def extract_pdf_text():
 
 def clean_text(text):
     text = text.replace('\f', '\n')
+    # Drop the glossary and everything after it
+    glossary_pos = text.find('List of Principles, Titles, and Dates')
+    if glossary_pos != -1:
+        text = text[:glossary_pos]
     text = FOOTER_RE.sub('', text)
     # Collapse runs of 3+ blank lines to 2
     text = re.sub(r'\n{3,}', '\n\n', text)
