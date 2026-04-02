@@ -20,6 +20,11 @@ DATE_RE = re.compile(
     re.MULTILINE,
 )
 
+MONTH_PAGE_RE = re.compile(
+    r'^(' + '|'.join(MONTHS) + r')$',
+    re.MULTILINE,
+)
+
 FOOTER_RE = re.compile(
     r'^(©\d{4} NA World Services.*'
     r'|To purchase paper copies.*'
@@ -47,6 +52,7 @@ def clean_text(text):
     if glossary_pos != -1:
         text = text[:glossary_pos]
     text = FOOTER_RE.sub('', text)
+    text = MONTH_PAGE_RE.sub('', text)
     # Collapse runs of 3+ blank lines to 2
     text = re.sub(r'\n{3,}', '\n\n', text)
     return text
