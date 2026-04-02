@@ -39,7 +39,7 @@ FOOTER_RE = re.compile(
 
 def extract_pdf_text():
     result = subprocess.run(
-        ['pdftotext', PDF_PATH, '-'],
+        ['pdftotext', '-layout', PDF_PATH, '-'],
         capture_output=True, text=True, check=True,
     )
     return result.stdout
@@ -53,6 +53,7 @@ def clean_text(text):
         text = text[:glossary_pos]
     text = FOOTER_RE.sub('', text)
     text = MONTH_PAGE_RE.sub('', text)
+    text = re.sub(r'^ +', '', text, flags=re.MULTILINE)
     # Collapse runs of 3+ blank lines to 2
     text = re.sub(r'\n{3,}', '\n\n', text)
     return text
