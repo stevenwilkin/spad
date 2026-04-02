@@ -87,14 +87,12 @@ def parse_entry(day, month_num, content):
 
     title, quote, quote_source = parse_first_paragraph(paragraphs[0].split('\n'))
 
-    body_paras = paragraphs[1:]
-    if len(body_paras) == 0:
-        body, closing = None, None
-    elif len(body_paras) == 1:
-        body, closing = None, body_paras[0]
-    else:
-        closing = body_paras[-1]
-        body = '\n\n'.join(body_paras[:-1])
+    body_paras = [' '.join(p.split('\n')) for p in paragraphs[1:]]
+    if len(body_paras) < 2:
+        sys.exit('Expected more paragraphs')
+
+    closing = body_paras[-1]
+    body = '\n'.join(body_paras[:-1])
 
     return (month_num, day, title, quote, quote_source, body, closing)
 
