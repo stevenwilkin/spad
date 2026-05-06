@@ -85,9 +85,13 @@ def parse_entry(day, month_num, content):
     if not paragraphs:
         return (month_num, day, None, None, None, None, None)
 
-    title, quote, quote_source = parse_first_paragraph(paragraphs[0].split('\n'))
+    if day == 6 and month_num == 5:
+        title, quote, quote_source = parse_first_paragraph(paragraphs[:1] + paragraphs[1].split('\n'))
+        body_paras = [' '.join(p.split('\n')) for p in paragraphs[2:]]
+    else:
+        title, quote, quote_source = parse_first_paragraph(paragraphs[0].split('\n'))
+        body_paras = [' '.join(p.split('\n')) for p in paragraphs[1:]]
 
-    body_paras = [' '.join(p.split('\n')) for p in paragraphs[1:]]
     if len(body_paras) < 2:
         sys.exit('Expected more paragraphs')
 
